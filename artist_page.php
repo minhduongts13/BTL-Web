@@ -14,9 +14,13 @@
 <body class="bg-black">
     <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 shadow-lg">
         <!-- Tiêu đề -->
-        <a href="homePage.php" class="text-decoration-none">
+        <?php
+        $newloca = "homePage.php";
+        if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
+        echo '<a href="'. $newloca .'" class="text-decoration-none">
             <h1 class="header__title me-4 fw-bold text-uppercase text-light">Spoticon</h1>
-        </a>
+        </a>';
+        ?>
 
         <!-- Thanh tìm kiếm -->
         <form class="d-flex flex-grow-1" role="search">
@@ -31,13 +35,14 @@
 
         <!-- Các nút chức năng -->
         <div class="ms-4 d-flex gap-3">
+            <?php
+            if ($_SESSION['username'] == 'admin') echo ' 
             <a href="advertiser_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
             </a>
             <a href="advertisement_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Quảng cáo</button>
-            </a>
-            <?php 
+            </a>';
             echo '
             <a class="text-decoration-none text_light" href="playlist.php?id='. $_SESSION['user_id'] .'">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Playlist của tôi</button>
@@ -127,7 +132,7 @@
                                     echo '
                                     <h2 class="card-title fw-bold text-uppercase">' . $result[0]['Nghe_Danh'] . '</h2>
                                     <ul class="list-unstyled mt-3">
-                                        <li><strong>Họ tên::</strong> ' . $result[0]['Ho_Ten'] . '</li>
+                                        <li><strong>Họ tên:</strong> ' . $result[0]['Ho_Ten'] . '</li>
                                         <li><strong>Mô tả:</strong> ' . $result[0]['Mo_Ta'] . '</li>
                                         <li><strong>Thuộc nhà phát hành:</strong> ' . $result2[0]['Ten_Nph'] . '</li>
                                         <li><strong>Nhóm nhạc:</strong> ' . $tenNhomNhac . '</li>

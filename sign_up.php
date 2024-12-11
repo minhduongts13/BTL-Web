@@ -18,9 +18,13 @@
 
     <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 shadow-lg">
         <!-- Tiêu đề -->
-        <a href="homePage.php" class="text-decoration-none">
+        <?php
+        $newloca = "homePage.php";
+        if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
+        echo '<a href="'. $newloca .'" class="text-decoration-none">
             <h1 class="header__title me-4 fw-bold text-uppercase text-light">Spoticon</h1>
-        </a>
+        </a>';
+        ?>
     </div>
 
     <div id="song-description" class="container">

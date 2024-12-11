@@ -24,7 +24,7 @@
 
     <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 shadow-lg">
         <!-- Tiêu đề -->
-        <a href="homePage.php" class="text-decoration-none">
+        <a href="#" class="text-decoration-none">
             <h1 class="header__title me-4 fw-bold text-uppercase text-light">Spoticon</h1>
         </a>
 
@@ -74,7 +74,7 @@
                     if (isset($_POST['username']) && isset($_POST['pass'])) {
                         $username = $_POST['username'];
                         $password = $_POST['pass'];
-
+                        
                         if (isset($_POST["remember"])) {
                             $cookie_name = "username";
                             $cookie_value = $_POST["username"];
@@ -90,10 +90,14 @@
                             if ($userId == 0) {
                                 echo "<p>Sai tài khoản hoặc mật khẩu</p>";
                             } else {
-                                session_start();
+                                
                                 $_SESSION['username'] = $username;
                                 $_SESSION['user_id'] = $userId;
-                                header('Location: ../homePage.php');
+                                $newloca = '../homePage.php';
+                                if ($_SESSION['username'] == 'admin'){
+                                    $newloca = 'homePage_admin.php';
+                                }
+                                header("location: $newloca");
                             }
                         } catch (PDOException $e) {
                             echo "Lỗi: " . $e->getMessage();

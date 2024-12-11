@@ -8,21 +8,40 @@
     <link rel="stylesheet" href="./assets/css/song_page.css">
     <link rel="icon" type="image/x-icon" href="/assets/image/icon/album1989tv.jpg">
     <title>Spoticon</title>
+    <?php include("auth.php") ?>
 </head>
 <body class="bg-black text-light">
     <!-- Header -->
     <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 shadow-lg">
-        <a href="#" class="text-decoration-none">
+        <?php
+        $newloca = "homePage.php";
+        if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
+        echo '<a href="'. $newloca .'" class="text-decoration-none">
             <h1 class="header__title me-4 fw-bold text-uppercase text-light">Spoticon</h1>
-        </a>
+        </a>';
+        ?>
         <form class="d-flex flex-grow-1" role="search" method="GET" action="search.php">
             <input id="Search" class="form-control me-2 rounded-pill border-0 shadow-sm" type="text" name="query" placeholder="Tìm kiếm bài hát, nghệ sĩ..." aria-label="Search" style="max-width: 600px; background-color: #1e1e1e; color: #fff;">
             <button class="btn btn-success rounded-pill px-4" type="submit">Tìm kiếm</button>
         </form>
 
         <div class="ms-4 d-flex gap-3">
+            <?php
+            if ($_SESSION['username'] == 'admin') echo ' 
+            <a href="advertiser_list.php" class="text-decoration-none text_light">
+                <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
+            </a>
+            <a href="advertisement_list.php" class="text-decoration-none text_light">
+                <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Quảng cáo</button>
+            </a>';
+            echo '
+            <a class="text-decoration-none text_light" href="playlist.php?id='. $_SESSION['user_id'] .'">
+                <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Playlist của tôi</button>
+            </a>
+            ';
+            ?>
             <a href="user_account_page.php">
-                <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Đăng nhập/Đăng kí</button>
+                <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Tài khoản của tôi</button>
             </a>
         </div>
     </div>
@@ -144,7 +163,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="d-flex justify-content-center">
-                    <a href="#">
+                    <a href="homePage.php">
                             <img src="./assets/image/icon/logo.png" alt="">   
                         </a>   
                 </div>

@@ -29,13 +29,14 @@
 
         <!-- Các nút chức năng -->
         <div class="ms-4 d-flex gap-3">
+            <?php
+            if ($_SESSION['username'] == 'admin') echo ' 
             <a href="advertiser_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
             </a>
             <a href="advertisement_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Quảng cáo</button>
-            </a>
-            <?php 
+            </a>';
             echo '
             <a class="text-decoration-none text_light" href="playlist.php?id='. $_SESSION['user_id'] .'">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Playlist của tôi</button>
