@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./assets/css/login.css">
     <link rel="icon" type="image/x-icon" href="/assets/image/icon/album1989tv.jpg">
     <title>Advertisers</title>
-    <?php include("../auth.php"); ?>
+    <?php include("../auth/php"); ?>
 
 </head>
 
@@ -60,6 +60,12 @@
                 $result = $statement->fetch();
                 echo $result[0];
             ?>
+        </div>
+
+        <div class="mt-3 d-flex justify-content-center">
+            <a href="../advertisement_list.php">
+                <button class="btn btn-light">Quay lại</button>
+            </a>
         </div>
     </div>
 </body>

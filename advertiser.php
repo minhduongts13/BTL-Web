@@ -9,8 +9,21 @@
     <link rel="stylesheet" href="./assets/css/responsive.css">
     <link rel="stylesheet" href="./assets/css/advertisers.css">
     <link rel="icon" type="image/x-icon" href="/assets/image/icon/album1989tv.jpg">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Nhà quảng cáo</title>
     <?php include("auth.php") ?>
+    <script>
+        $(document).ready(function() {
+            $("#returnListAdvertiser").click(function () {
+                $("#song-description").load('advertiser_list_without_footer.php');
+            })
+        })
+
+        function modify(idAds) {
+            $("#song-description").load('advertiser_modifier.php?idAds=' + idAds);
+        }
+    </script>
+
 </head>
 
 
@@ -18,13 +31,9 @@
 
     <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 shadow-lg">
         <!-- Tiêu đề -->
-        <?php
-        $newloca = "homePage.php";
-        if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
-        echo '<a href="'. $newloca .'" class="text-decoration-none">
+        <a href="homePage.php" class="text-decoration-none">
             <h1 class="header__title me-4 fw-bold text-uppercase text-light">Spoticon</h1>
-        </a>';
-        ?>
+        </a>
 
         <!-- Thanh tìm kiếm -->
         <form class="d-flex flex-grow-1" role="search" method="GET" action="search.php">
@@ -34,14 +43,13 @@
 
         <!-- Các nút chức năng -->
         <div class="ms-4 d-flex gap-3">
-            <?php
-            if ($_SESSION['username'] == 'admin') echo ' 
             <a href="advertiser_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
             </a>
             <a href="advertisement_list.php" class="text-decoration-none text_light">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Quảng cáo</button>
-            </a>';
+            </a>
+            <?php 
             echo '
             <a class="text-decoration-none text_light" href="playlist.php?id='. $_SESSION['user_id'] .'">
                 <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Playlist của tôi</button>
@@ -54,7 +62,7 @@
         </div>
     </div>
 
-    <div id="song-description" class="container">
+    <div id="song-description" class="container min-vh-100">
         <div class="card bg-dark text-white shadow-lg">
             <div class="bg-success bg-gradient p-2">
                 <h2 class="card-title text-center text-uppercase mb-0">NHÀ QUẢNG CÁO</h2>
@@ -62,7 +70,7 @@
 
             <div>
                 <div class="col-md-12 text-center mt-4">
-                    <img src="./assets/image/slider/advertiser.png" class="img-fluid rounded shadow-sm" alt="Image">
+                    <img src="./assets/image/slider/advertiser.jpg" class="img-fluid rounded shadow-sm" alt="Image">
                 </div>
                 
                 <?php
@@ -90,8 +98,12 @@
                     </div>
 
                     <div class='mt-3 d-flex justify-content-center'>
-                        <a href='advertiser_modifier.php?idAds=$idAds'>
-                            <button class='btn btn-success'>Sửa</button>
+                        <button class='btn btn-success' onclick='modify($idAds)'>Sửa</button>
+                    </div>
+
+                    <div class='mt-3 d-flex justify-content-center'>
+                        <a href='advertiser_list.php'>
+                        <button class='btn btn-light'>Quay lại</button>
                         </a>
                     </div>
                     ";
@@ -99,13 +111,14 @@
             </div>
         </div>
     </div>
-    <div id="footer" class="bg-black mt-5 text-light border-top border-white">
+
+    <div id="footer" class="bg-black mt-2 text-light border-top border-white">
         <div class="row">
             <div class="col-4">
                 <div class="d-flex justify-content-center">
                     <a href="homePage.php">
-                        <img src="./assets/image/icon/logo.png" alt="">   
-                    </a>
+                            <img src="./assets/image/icon/logo.png" alt="">   
+                        </a>   
                 </div>
                 <div class="socials-list d-flex justify-content-center mt-1">
                     <a href=""><i class="ti-facebook text-light me-1"></i></a>
@@ -130,5 +143,6 @@
             </div>    
         </div>
     </div>
+
 </body>
 </html>
