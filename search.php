@@ -52,20 +52,42 @@
         <section id="song-list" class="mb-5">
             <h2 class="text-uppercase fw-bold mb-4">Danh sách kết quả tìm kiếm bài hát</h2>
             <div class="row">
-                <?php
-                include 'connect.php'; // Connect to the database
-                $query = $_GET['query'];
-                // Query to get songs
-                $stmt = $db->prepare("CALL `assignment2`.`SearchSongsByName`(:query);
-");
-                $stmt->execute(['query' => $query]);
-                $songs = $stmt->fetchAll();
+            <?php
+                include 'connect.php'; // Kết nối cơ sở dữ liệu
+
+                // Lấy và kiểm tra đầu vào từ người dùng
+                $query = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
+                if (!$query) {
+                    die("Tìm kiếm không hợp lệ");
+                }
+
+                try {
+                    // Chuẩn bị và thực thi truy vấn an toàn
+                    $stmt = $db->prepare("CALL `assignment2`.`SearchSongsByName`(:query)");
+                    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
+                    $stmt->execute();
+
+                    // Lấy kết quả
+                    $songs = $stmt->fetchAll();
+                    
+
+                    
+                } catch (PDOException $e) {
+                    // Ghi log lỗi thay vì hiển thị chi tiết
+                    error_log($e->getMessage());
+                    die("An error occurred. Please try again later.");
+                }
+
+                $img = array('https://media.pitchfork.com/photos/6614092742a7de97785c7a48/master/w_1280%2Cc_limit/Billie-Eilish-Hit-Me-Hard-and-Soft.jpg', 'https://miro.medium.com/max/6000/1*O6soMKjf8PPr9lb6ong_Fw.jpeg', 'https://i.scdn.co/image/ab67616d0000b27371dea61e1ce07e18c746d775', 'https://th.bing.com/th/id/OIP.ihrb6OsCLaaNNeUX9zfp0wHaHa?rs=1&pid=ImgDetMain', 'https://images.genius.com/bcaf43cefdd93a9be1da5d17d4a061f9.1000x1000x1.jpg', 'https://is5-ssl.mzstatic.com/image/thumb/Music122/v4/61/3d/86/613d86b4-e539-108e-84f7-46ce1962f778/190296036132.jpg/1200x1200bf-60.jpg', 'https://th.bing.com/th/id/OIP.UgvF6caKdQipEANwQGcC4wHaHa?rs=1&pid=ImgDetMain', 'https://e.snmc.io/i/600/s/b8168764a6812ba7ee521cd32406b9ad/12621308/rose-and-bruno-mars-apt-cover-art.jpg', 'https://th.bing.com/th/id/OIP.64Ec-8p__cNSfhVuhf14rwHaHa?rs=1&pid=ImgDetMain', 'https://upload.wikimedia.org/wikipedia/en/3/38/When_We_All_Fall_Asleep%2C_Where_Do_We_Go%3F.png', 'https://th.bing.com/th/id/OIP.wljmAULxSw3-tgVzTPp_SAHaHa?rs=1&pid=ImgDetMain');
 
                 // Loop through songs and create cards
                 foreach ($songs as $song) {
+                    $img_i = rand(0, count($img) - 1);
+
                     echo '<div class="col-md-3 mb-4">
                             <div class="card bg-dark text-white shadow">
                                 <div class="card-body">
+                                    <img class="img-fluid mb-2" src="'.$img[$img_i].'" alt="song image">
                                     <h5 class="card-title text-truncate">' . htmlspecialchars($song['Ten_Bai_Hat']) . '</h5>
                                     <p class="card-text"><small>Ngày phát hành: ' . htmlspecialchars($song['Ngay_Phat_Hanh']) . '</small></p>
                                     <a href="song_page.php?id=' . htmlspecialchars($song['ID_Bai_Hat']) . '" class="btn btn-success btn-sm">Xem chi tiết</a>
@@ -84,14 +106,21 @@
                 <?php
                 include 'connect.php'; // Connect to the database
                 $query = $_GET['query'];
+                $query = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
+                if (!$query) {
+                    die("Tìm kiếm không hợp lệ");
+                }
                 $stmt = $db->prepare("CALL SearchArtistsByName(:query)");
                 $stmt->execute(['query' => $query]);
                 $artists = $stmt->fetchAll();
+                $img = array('https://yt3.googleusercontent.com/oN0p3-PD3HUzn2KbMm4fVhvRrKtJhodGlwocI184BBSpybcQIphSeh3Z0i7WBgTq7e12yKxb=s900-c-k-c0x00ffffff-no-rj', 'https://th.bing.com/th/id/OIP.byu4wb3Ag5IKYqZcJT_eXwHaHa?w=683&h=683&rs=1&pid=ImgDetMain', 'https://th.bing.com/th/id/R.6007a8c23db45c36488bfa7a0035d090?rik=y7ZfdfdUUiPaaw&pid=ImgRaw&r=0', 'https://cdnphoto.dantri.com.vn/ecdPkKw4WCg-NR0Zi2shwRYyUlo=/thumb_w/1020/2022/11/10/micheal-jackson-1668044313441.jpg', 'https://media.vov.vn/sites/default/files/styles/large/public/2021-08/image_7.jpeg.jpg', 'https://yt3.googleusercontent.com/gam065jhT3tmDHVFglA846lO0oNHImdty7Vw2ATuWOzcamMWmsNYzVqrmtlWX1egn6BKYq__Mw=s900-c-k-c0x00ffffff-no-rj');
                 foreach ($artists as $artist) {
-                    echo '<div class="col-md-4 mb-3">
+                    $img_i = rand(0, count($img) - 1);
+                    echo '<div class="col-md-3 mb-3">
                             <div class="card bg-dark text-white shadow">
                                 <div class="card-body text-center">
-                                    <a class="text-decoration-none text-white" href=artist_page.php?id='. $artist['ID_Nghe_Si'] .'
+                                    <a class="text-decoration-none text-white" href=artist_page.php?id="'. $artist['ID_Nghe_Si'] .'">
+                                        <img class="img-fluid mb-2" src="'.$img[$img_i].'" alt="song image">
                                         <h5 class="card-title">' . htmlspecialchars($artist['Nghe_Danh']) . '</h5>
                                     </a>
                                 </div>
@@ -109,15 +138,22 @@
                 <?php
                 include 'connect.php'; // Connect to the database
                 $query = $_GET['query'];
+                $query = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
+                if (!$query) {
+                    die("Tìm kiếm không hợp lệ");
+                }
                 $stmt = $db->prepare("CALL SearchAlbumsByName(:query);");
                 $stmt->execute(['query' => $query]);
                 $albums = $stmt->fetchAll();
+                $img = array('https://media.pitchfork.com/photos/6614092742a7de97785c7a48/master/w_1280%2Cc_limit/Billie-Eilish-Hit-Me-Hard-and-Soft.jpg', 'https://miro.medium.com/max/6000/1*O6soMKjf8PPr9lb6ong_Fw.jpeg', 'https://i.scdn.co/image/ab67616d0000b27371dea61e1ce07e18c746d775', 'https://th.bing.com/th/id/OIP.ihrb6OsCLaaNNeUX9zfp0wHaHa?rs=1&pid=ImgDetMain', 'https://images.genius.com/bcaf43cefdd93a9be1da5d17d4a061f9.1000x1000x1.jpg', 'https://is5-ssl.mzstatic.com/image/thumb/Music122/v4/61/3d/86/613d86b4-e539-108e-84f7-46ce1962f778/190296036132.jpg/1200x1200bf-60.jpg', 'https://th.bing.com/th/id/OIP.UgvF6caKdQipEANwQGcC4wHaHa?rs=1&pid=ImgDetMain', 'https://e.snmc.io/i/600/s/b8168764a6812ba7ee521cd32406b9ad/12621308/rose-and-bruno-mars-apt-cover-art.jpg', 'https://th.bing.com/th/id/OIP.64Ec-8p__cNSfhVuhf14rwHaHa?rs=1&pid=ImgDetMain', 'https://upload.wikimedia.org/wikipedia/en/3/38/When_We_All_Fall_Asleep%2C_Where_Do_We_Go%3F.png', 'https://th.bing.com/th/id/OIP.wljmAULxSw3-tgVzTPp_SAHaHa?rs=1&pid=ImgDetMain');
                 foreach ($albums as $album) {
+                    $img_i = rand(0, count($img) - 1);
                     echo '
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="card bg-dark text-white shadow">
                             <div class="card-body">
-                                <a class="text-decoration-none text-white" href=albuminfor.php?id='. $album['ID_Album'] .'
+                                <a class="text-decoration-none text-white" href=albuminfor.php?id="'. $album['ID_Album'] .'">
+                                    <img class="img-fluid mb-2" src="'.$img[$img_i].'" alt="song image">
                                     <h5 class="card-title">' . htmlspecialchars($album['Ten_Album']) . '</h5>
                                     <p class="card-text"><small>Ngày phát hành: ' . htmlspecialchars($album['Ngay_Phat_Hanh']) . '</small></p>
                                 </a>
