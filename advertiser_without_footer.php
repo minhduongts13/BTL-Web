@@ -69,9 +69,13 @@
             </div>
 
             <div>
-                <div class="col-md-12 text-center mt-4">
-                    <img src="./assets/image/slider/advertiser.jpg" class="img-fluid rounded shadow-sm" alt="Image">
-                </div>
+                <?php
+                $img = array('https://www.brandinginasia.com/wp-content/uploads/2023/07/Vinamilk-New-Logo.jpg', 'https://th.bing.com/th/id/R.b000fe938f1a1043ec4c83f0ff38523d?rik=haqlalLbHipNgg&riu=http%3a%2f%2fvanphongphamdongnai.net.vn%2fsystem%2fhtml%2fbot-giat-aba-e7dde1ee.jpg&ehk=5kiyFEnTmeDas1AeEzn6aJj448Jjo%2b7LejFneEDGvSQ%3d&risl=&pid=ImgRaw&r=0', 'https://inkythuatso.com/uploads/images/2021/12/logo-fpt-polytechnic-inkythuatso-09-12-57-46.jpg', 'https://th.bing.com/th/id/OIP.jsNn-cz17xZ4GW8u0MKEwwHaBj?rs=1&pid=ImgDetMain');
+                $img_i = rand(0, count($img) - 1);
+                echo '<div class="col-md-12 text-center mt-4">
+                    <img src="'. $img[$img_i] .'" class="rounded shadow-sm" style="height: 200px" alt="Image">
+                </div>';
+                ?>
                 
                 <?php
                     $idAds = $_GET['idAds'];

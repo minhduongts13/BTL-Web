@@ -119,7 +119,7 @@
                     echo '<div class="col-md-3 mb-3">
                             <div class="card bg-dark text-white shadow">
                                 <div class="card-body text-center">
-                                    <a class="text-decoration-none text-white" href=artist_page.php?id="'. $artist['ID_Nghe_Si'] .'">
+                                    <a class="text-decoration-none text-white" href="artist_page.php?id='. $artist['ID_Nghe_Si'] .'">
                                         <img class="img-fluid mb-2" src="'.$img[$img_i].'" alt="song image">
                                         <h5 class="card-title">' . htmlspecialchars($artist['Nghe_Danh']) . '</h5>
                                     </a>
@@ -152,7 +152,7 @@
                     <div class="col-md-3 mb-3">
                         <div class="card bg-dark text-white shadow">
                             <div class="card-body">
-                                <a class="text-decoration-none text-white" href=albuminfor.php?id="'. $album['ID_Album'] .'">
+                                <a class="text-decoration-none text-white" href="albuminfor.php?id='. $album['ID_Album'] .'">
                                     <img class="img-fluid mb-2" src="'.$img[$img_i].'" alt="song image">
                                     <h5 class="card-title">' . htmlspecialchars($album['Ten_Album']) . '</h5>
                                     <p class="card-text"><small>Ngày phát hành: ' . htmlspecialchars($album['Ngay_Phat_Hanh']) . '</small></p>
