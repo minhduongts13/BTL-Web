@@ -18,7 +18,7 @@
 
 <body class="bg-black">
 
-    <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 mb-5 shadow-lg">
+<div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 mb-5 shadow-lg">
         <?php
         $newloca = "homePage.php";
         if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
@@ -59,7 +59,7 @@
                 <ul class="dropdown-menu dropdown-menu-end bg-black">
                     <?php
                     if ($_SESSION['username'] == 'admin') echo '
-                    <li><a href="advertiser_list.php" class="dropdown-item text-light">Nhà quảng cáo</a></li>
+                    <li><a href="advertiser_list.php" class="dropdown-item text-light ">Nhà quảng cáo</a></li>
                     <li><a href="advertisement_list.php" class="dropdown-item text-light">Quảng cáo</a></li>';
                     echo '
                     <li><a href="playlist.php?id='. $_SESSION['user_id'] .'" class="dropdown-item text-light">Playlist của tôi</a></li>

@@ -31,7 +31,10 @@
         <div class="ms-4">
             <div class="d-none d-lg-flex gap-3">
                 <?php
-                if ($_SESSION['username'] == 'admin') echo ' 
+                if ($_SESSION['username'] == 'admin') echo '
+                <a href="admin_user_management.php" class="text-decoration-none text_light">
+                    <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Người dùng</button>
+                </a> 
                 <a href="advertiser_list.php" class="text-decoration-none text_light">
                     <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
                 </a>
@@ -56,6 +59,7 @@
                 <ul class="dropdown-menu dropdown-menu-end bg-black">
                     <?php
                     if ($_SESSION['username'] == 'admin') echo '
+                    <li><a href="admin_user_management.php" class="dropdown-item text-light ">Người dùng</a></li>
                     <li><a href="advertiser_list.php" class="dropdown-item text-light ">Nhà quảng cáo</a></li>
                     <li><a href="advertisement_list.php" class="dropdown-item text-light">Quảng cáo</a></li>';
                     echo '

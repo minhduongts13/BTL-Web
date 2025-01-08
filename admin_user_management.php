@@ -7,16 +7,32 @@
     <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="./assets/css/song_page.css">
     <link rel="stylesheet" href="./assets/css/responsive.css">
+    <link rel="stylesheet" href="./assets/css/advertisers.css">
     <link rel="icon" type="image/x-icon" href="/assets/image/icon/album1989tv.jpg">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <title>Thêm nhà quảng cáo</title>
+    <title>Quản lý tài khoản</title>
     <?php include("auth.php") ?>
     <style> .dropdown-item:hover, .dropdown-item:focus { background-color: #343a40 !important; /* Màu nền khi hover */ color: #ffffff !important; /* Màu chữ khi hover */ } </style> 
 
+    <script>
+
+        function addNewUser() {
+            $("#song-description").load('admin_add_user.php');
+        }
+
+        function adminUserInfor() {
+            $("#song-description").load('admin_user_infor.php?id=' + index);
+        }
+
+        function adminUserModify(index) {
+            $("#song-description").load('admin_user_modify.php?id=' + index);
+        }
+    </script>
 </head>
 
 <body class="bg-black">
-    <div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 mb-5 shadow-lg">
+
+<div class="header container-fluid border-bottom-0 d-flex align-items-center bg-black fixed-top py-3 px-4 mb-5 shadow-lg">
         <?php
         $newloca = "homePage.php";
         if ($_SESSION['username'] == 'admin') $newloca = "homePage_admin.php";
@@ -32,7 +48,10 @@
         <div class="ms-4">
             <div class="d-none d-lg-flex gap-3">
                 <?php
-                if ($_SESSION['username'] == 'admin') echo ' 
+                if ($_SESSION['username'] == 'admin') echo '
+                <a href="admin_user_management.php" class="text-decoration-none text_light">
+                    <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Người dùng</button>
+                </a> 
                 <a href="advertiser_list.php" class="text-decoration-none text_light">
                     <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2">Nhà quảng cáo</button>
                 </a>
@@ -57,7 +76,8 @@
                 <ul class="dropdown-menu dropdown-menu-end bg-black">
                     <?php
                     if ($_SESSION['username'] == 'admin') echo '
-                    <li><a href="advertiser_list.php" class="dropdown-item text-light">Nhà quảng cáo</a></li>
+                    <li><a href="admin_user_management.php" class="dropdown-item text-light ">Người dùng</a></li>
+                    <li><a href="advertiser_list.php" class="dropdown-item text-light ">Nhà quảng cáo</a></li>
                     <li><a href="advertisement_list.php" class="dropdown-item text-light">Quảng cáo</a></li>';
                     echo '
                     <li><a href="playlist.php?id='. $_SESSION['user_id'] .'" class="dropdown-item text-light">Playlist của tôi</a></li>
@@ -72,57 +92,90 @@
     <div id="song-description" class="container min-vh-100">
         <div class="card bg-dark text-white shadow-lg">
             <div class="bg-success bg-gradient p-2">
-                <h2 class="card-title text-center text-uppercase mb-0">THÊM NHÀ QUẢNG CÁO</h2>
+                <h2 class="card-title text-center text-uppercase mb-0">TÀI KHOẢN NGƯỜI DÙNG</h2>
             </div>
 
-            <form method="post" action="advertiser_add.php" id="addNewAdvertiser">
-
-                <div class="form-group row mt-2">
-                    <label for="name-advertiser" class="col-sm-2 col-form-label">Tên nhà quảng cáo</label>
-                    <div class="col-8 col-md-6">
-                        <input type="text" class="form-control" id="name-advertiser" placeholder="Nhập tên nhà quảng cáo" name="advertiser_name" required>
-                    </div>
+            <div>            
+                <div class="mt-3 d-flex justify-content-center">
+                    <button class="btn btn-success" onclick="addNewUser()">Thêm người dùng</button>
                 </div>
 
-                <div class="form-group row mt-2">
-                    <label for="description-advertiser" class="col-sm-2 col-form-label">Mô tả nhà quảng cáo</label>
-                    <div class="col-8 col-md-6">
-                        <textarea class="form-control" id="description-advertiser" placeholder="Nhập mô tả nhà quảng cáo" name="description" rows="5"></textarea>
-                    </div>
-                </div>                
-
-                <div class="form-group row mt-2 d-flex justify-content-center">
-                    <button class="btn btn-primary col-2 col-md-1" type="submit">Thêm</button>
+                <div class="mt-3 d-flex justify-content-end me-2">
+                    <form method="post" action="" id="filter_value">
+                        <input class="form-check-input" type="radio" id="vip_filter" name="is_filter" value="vip_filter">
+                        <label for="vip_filter">Chỉ xem người dùng VIP</label> <br>
+                        <input class="form-check-input" type="radio" id="normal_filter" name="is_filter" value="normal_filter">
+                        <label for="normal_filter">Chỉ xem người dùng thường</label> <br>
+                        <input class="form-check-input" type="radio" id="no_filter" name="is_filter" value="no_filter">
+                        <label for="no_filter">Xem tất cả</label> <br>
+                        <button class="btn btn-primary mt-3" type="submit">Xác nhận</button>
+                    </form>
                 </div>
-            </form>
 
-            <?php
-                include 'connect.php';
-
-                if (isset($_POST['advertiser_name']) && isset($_POST['description'])) {
-                    $name = $_POST['advertiser_name'];
-                    $des = $_POST['description'];
-                    
-                    $statement = $db->prepare("SELECT addAdvertiser('$name', '$des')");
-                    $statement->execute();
-
-                    $result = $statement->fetch();
-                    $str = $result[0];
-                    echo "
-                        <div class='mt-3 d-flex justify-content-center'>
-                            $str
-                        </div>
-                    ";
-                } else {
-                    echo "<div></div>";
-                }
-            ?>
-
-            <div class="mt-3 d-flex justify-content-center">
-                <a href="advertiser_list.php">
-                    <button class="btn btn-light" id="returnListAdvertiser">Quay lại danh sách nhà quảng cáo</button>
-                </a>
             </div>
+
+            <table class="table table-bordered table-hover table-responsive-lg mt-3">
+                <thead class="table-success">
+                    <tr>
+                        <th scope="col" class="center width10">STT</th>
+                        <th scope="col" class="center width30">TÊN ĐĂNG NHẬP</th>
+                        <th scope="col" class="center width20">MẬT KHẨU</th>
+                        <th scope="col" class="center width20">CHI TIẾT</th>
+                        <th scope="col" class="center width20">SỬA</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-dark">
+
+                    <?php
+                        include "connect.php";
+                        $is_filter = false;
+                        if (isset($_POST['is_filter']) && $_POST['is_filter'] == 'vip_filter') {
+                            $is_filter = "vip_filter";
+                        }
+                        else if (isset($_POST['is_filter']) && $_POST['is_filter'] == 'normal_filter') {
+                            $is_filter = "normal_filter";
+                        }
+                        else $is_filter = "no_filter";
+
+                        if ($is_filter == 'vip_filter' ) {
+                            $statement = $db->prepare("SELECT DISTINCT ID, Ten_dang_nhap, Mat_khau FROM NGUOI_DUNG, THUE_BAO_PREMIUM WHERE ID = ID_nguoi_dung;");
+                        } else if ($is_filter == 'normal_filter' ) {
+                            $statement = $db->prepare("SELECT DISTINCT ID, Ten_dang_nhap, Mat_khau  FROM NGUOI_DUNG LEFT JOIN THUE_BAO_PREMIUM ON ID = ID_nguoi_dung WHERE ID_nguoi_dung IS NULL;");
+                        }else {
+                            $statement = $db->prepare("SELECT * FROM NGUOI_DUNG;");
+                        }
+                       
+                        $statement->execute();
+                        $result = $statement->fetchAll();
+
+                        $count = 1;    
+                        for ($i = 0; $i < count($result); $i++) {
+                            $idCon = $result[$i]['ID'];
+                            $name = $result[$i]['Ten_dang_nhap'];
+                            $pass = $result[$i]['Mat_khau'];
+
+                            echo "
+                                <tr>
+                                    <th scope='row' class='center width10'>$count</th>
+                                    <td class='width30'>$name</td>
+                                    <td class='center width20'>$pass</td>
+                                    <td class='center width20'>
+                                        <a href='admin_user_infor.php?id=".$idCon."'>Chi tiết</a>
+                                    </td>
+                                    <td class='center width20'>
+                                        <a href='admin_user_modify.php?id=".$idCon."'>Sửa</a>
+                                    </td>
+                                </tr>
+                            ";
+                            $count++;
+                        }
+                    ?>
+
+                </tbody>
+            </table>
+
+        </div>
     </div>
 
     <div id="footer" class="bg-black mt-2 text-light border-top border-white text-center py-4">
@@ -154,6 +207,8 @@
         </div>    
     </div>
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
